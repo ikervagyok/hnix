@@ -53,7 +53,7 @@ import           Control.Monad.Reader
 import           Control.Monad.State.Strict
 
 import           System.Console.Haskeline.MonadException
-import           System.Console.Repline
+import           System.Console.Repline        as Repline
 import           System.Environment
 import           System.Exit
 
@@ -61,9 +61,9 @@ import           System.Exit
 main :: (MonadNix e t f m, MonadIO m, MonadException m) => m ()
 main = flip evalStateT initState
 #if MIN_VERSION_repline(0, 2, 0)
-    $ evalRepl (return prefix) cmd options (Just ':') completer welcomeText
+    $ evalRepl (return prefix) cmd Repline.options (Just ':') completer welcomeText
 #else
-    $ evalRepl prefix cmd options completer welcomeText
+    $ evalRepl prefix cmd Repline.options completer welcomeText
 #endif
  where
   prefix = "hnix> "
@@ -218,7 +218,7 @@ help
   -> Repl e t f m ()
 help _ = liftIO $ do
   putStrLn "Available commands:\n"
-  mapM_ putStrLn $ map (\o -> ":" ++ (fst o)) (options @e @t @f @m)
+  mapM_ putStrLn $ map (\o -> ":" ++ (fst o)) (Repl.options @e @t @f @m)
 
 completer
   :: (MonadNix e t f m, MonadIO m)
