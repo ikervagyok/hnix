@@ -13,6 +13,7 @@ import           Data.IORef
 import           Data.Maybe
 import           Data.STRef
 
+import           Data.Type.Equality
 import           Unsafe.Coerce
 
 type Var m = Ref m
